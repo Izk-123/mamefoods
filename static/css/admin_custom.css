@@ -1,0 +1,146 @@
+/* Based on poster colors */
+:root {
+    --primary: #0a2e5a;
+    --secondary: #ffcc00;
+    --dark: #0a2e5a;
+    --light: #f8f9fa;
+}
+
+/* Header styling */
+#header {
+    background-color: var(--primary) !important;
+    color: white !important;
+    border-bottom: 2px solid var(--secondary) !important;
+}
+
+/* Brand text styling */
+.brand-text {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.brand-text .text-primary {
+    color: white !important;
+}
+
+.brand-text .text-secondary {
+    color: var(--secondary) !important;
+    font-style: italic;
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.btn-warning {
+    background-color: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+/* Sidebar styling */
+.sidebar-dark-warning .nav-sidebar > .nav-item > .nav-link.active, 
+.sidebar-light-warning .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: var(--secondary) !important;
+    color: var(--primary) !important;
+}
+
+/* Card styling */
+.card {
+    border: 1px solid rgba(10, 46, 90, 0.1);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: rgba(10, 46, 90, 0.03);
+    border-bottom: 1px solid rgba(10, 46, 90, 0.1);
+}
+
+/* Table styling */
+.table thead th {
+    background-color: rgba(10, 46, 90, 0.1);
+    color: var(--primary);
+}
+
+/* Custom logo styling */
+.logo-custom {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.logo-custom .brand-main {
+    font-size: 28px;
+    color: white;
+    display: block;
+    letter-spacing: 1.5px;
+}
+
+.logo-custom .brand-tagline {
+    font-size: 18px;
+    color: var(--secondary);
+    font-style: italic;
+    display: block;
+    margin-top: -5px;
+}
+
+.logo-custom .brand-product {
+    font-size: 24px;
+    color: white;
+    display: block;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.logo-custom .brand-premium {
+    font-size: 16px;
+    color: var(--secondary);
+    display: block;
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+/* Add to bottom of file */
+/* Login page specific styles */
+body.login .logo-custom {
+    padding: 5px 0;
+    transform: scale(0.8);
+    transform-origin: center;
+}
+
+body.login .brand-main {
+    font-size: 20px !important;
+}
+
+body.login .brand-product {
+    font-size: 18px !important;
+}
+
+body.login .brand-tagline,
+body.login .brand-premium {
+    display: none;
+}
+
+/* Add to bottom of file */
+/* Sidebar scrollbar */
+.sidebar {
+    overflow-y: auto !important;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #0a2e5a;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #ffcc00;
+    border-radius: 4px;
+}
