@@ -117,6 +117,47 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CSRF trusted origins (for production)
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
 
-# ---------- Unfold admin config (uncomment if needed) ----------
+# ---------- Unfold admin config (uncomment and adjust if needed) ----------
 # from django.templatetags.static import static
-# UNFOLD = { ... }
+# UNFOLD = {
+#     "SITE_TITLE": "MAMEFOODS Admin",
+#     "SITE_HEADER": "MAMEFOODS",
+#     "SITE_URL": "/",
+#     "SITE_ICON": lambda request: static("img/logo.png"),
+#     "SITE_LOGO": lambda request: static("img/logo.png"),
+#     "COLORS": {
+#         "primary": {
+#             "50": "250 245 255",
+#             "100": "243 232 255",
+#             "200": "233 213 255",
+#             "300": "216 180 254",
+#             "400": "192 132 252",
+#             "500": "168 85 247",
+#             "600": "147 51 234",
+#             "700": "126 34 206",
+#             "800": "107 33 168",
+#             "900": "88 28 135",
+#             "950": "59 7 100",
+#         },
+#     },
+#     "SIDEBAR": {
+#         "show_search": True,
+#         "show_all_applications": True,
+#         "navigation": [
+#             {"title": "Dashboard", "icon": "dashboard", "link": "/admin"},
+#             {
+#                 "title": "Products",
+#                 "icon": "shopping_bag",
+#                 "links": [
+#                     {"title": "Categories", "link": "/admin/main/productcategory/"},
+#                     {"title": "Products", "link": "/admin/main/product/"},
+#                     {"title": "Variants", "link": "/admin/main/productvariant/"},
+#                     {"title": "Images", "link": "/admin/main/productimage/"},
+#                 ],
+#             },
+#             {"title": "Team", "icon": "people", "link": "/admin/main/teammember/"},
+#             {"title": "Certifications", "icon": "verified", "link": "/admin/main/certification/"},
+#             {"title": "Messages", "icon": "email", "link": "/admin/main/contactmessage/"},
+#         ],
+#     },
+# }
