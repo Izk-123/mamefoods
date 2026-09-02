@@ -78,9 +78,6 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",  # Not applicable to PostgreSQL – can remove
-        },
     }
 }
 
@@ -110,9 +107,56 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CSRF trusted origins (for production)
+# CSRF trusted origins (for production) – read from env
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
 
-# ---------- Unfold admin config (uncomment if needed) ----------
+# Security headers (optional, but recommended)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # if behind reverse proxy with SSL
+# SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'
+# SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'False') == 'True'
+# CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'False') == 'True'
+
+# ---------- Unfold admin config (uncomment and adjust if needed) ----------
 # from django.templatetags.static import static
-# UNFOLD = { ... }
+# UNFOLD = {
+#     "SITE_TITLE": "MAMEFOODS Admin",
+#     "SITE_HEADER": "MAMEFOODS",
+#     "SITE_URL": "/",
+#     "SITE_ICON": lambda request: static("img/logo.png"),
+#     "SITE_LOGO": lambda request: static("img/logo.png"),
+#     "COLORS": {
+#         "primary": {
+#             "50": "250 245 255",
+#             "100": "243 232 255",
+#             "200": "233 213 255",
+#             "300": "216 180 254",
+#             "400": "192 132 252",
+#             "500": "168 85 247",
+#             "600": "147 51 234",
+#             "700": "126 34 206",
+#             "800": "107 33 168",
+#             "900": "88 28 135",
+#             "950": "59 7 100",
+#         },
+#     },
+#     "SIDEBAR": {
+#         "show_search": True,
+#         "show_all_applications": True,
+#         "navigation": [
+#             {"title": "Dashboard", "icon": "dashboard", "link": "/admin"},
+#             {
+#                 "title": "Products",
+#                 "icon": "shopping_bag",
+#                 "links": [
+#                     {"title": "Categories", "link": "/admin/main/productcategory/"},
+#                     {"title": "Products", "link": "/admin/main/product/"},
+#                     {"title": "Variants", "link": "/admin/main/productvariant/"},
+#                     {"title": "Images", "link": "/admin/main/productimage/"},
+#                 ],
+#             },
+#             {"title": "Team", "icon": "people", "link": "/admin/main/teammember/"},
+#             {"title": "Certifications", "icon": "verified", "link": "/admin/main/certification/"},
+#             {"title": "Messages", "icon": "email", "link": "/admin/main/contactmessage/"},
+#         ],
+#     },
+# }
