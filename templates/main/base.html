@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{% block title %}{{ site_config.site_name }} - Quality Food Products from Malawi{% endblock %}</title>
+  <meta content="{% block meta_description %}Producer of Malawi's finest aromatic long grain rice, flour, and agricultural products{% endblock %}" name="description">
+  <meta content="{% block meta_keywords %}Malawi rice, organic food, premium flour, agricultural products, kumudzi taste{% endblock %}" name="keywords">
+  <link href="{% static 'img/logo.png' %}" rel="icon">
+  <link href="{% static 'img/logo.png' %}" rel="apple-touch-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header">
+  <div class="hdr-inner">
+    <a href="{% url 'index' %}" class="hdr-logo"><img src="{% static 'img/logo.png' %}" alt="{{ site_config.site_name }}"></a>
+    <nav class="hdr-nav">
+      <a href="{% url 'index' %}" class="hdr-link {% if request.path == '/' %}hdr-active{% endif %}">Home</a>
+      <a href="{% url 'products' %}" class="hdr-link {% if request.path == '/products/' %}hdr-active{% endif %}">Products</a>
+      <a href="{% url 'blog_list' %}" class="hdr-link {% if request.path == '/blog/' %}hdr-active{% endif %}">Blog</a>
+      <div class="hdr-dropdown">
+        <a href="#" class="hdr-link {% if '/about' in request.path %}hdr-active{% endif %}">About <i class="bi bi-chevron-down" style="font-size:11px;margin-left:3px;"></i></a>
+        <div class="hdr-dropdown-menu">
+          <a href="{% url 'about' %}">About Us</a>
+          <a href="{% url 'about' %}#team">Our Team</a>
+          <a href="{% url 'about' %}#certifications">Certifications</a>
+        </div>
+      </div>
+      <a href="{% url 'contact' %}" class="hdr-link {% if request.path == '/contact/' %}hdr-active{% endif %}">Contact</a>
+    </nav>
+    <div class="hdr-right">
+      <div class="hdr-socials">
+        {% if site_config.facebook_url %}<a href="{{ site_config.facebook_url }}" target="_blank"><i class="bi bi-facebook"></i></a>{% endif %}
+        {% if site_config.instagram_url %}<a href="{{ site_config.instagram_url }}" target="_blank"><i class="bi bi-instagram"></i></a>{% endif %}
+        {% if site_config.linkedin_url %}<a href="{{ site_config.linkedin_url }}" target="_blank"><i class="bi bi-linkedin"></i></a>{% endif %}
+        {% if site_config.twitter_url %}<a href="{{ site_config.twitter_url }}" target="_blank"><i class="bi bi-twitter"></i></a>{% endif %}
+      </div>
+      <button class="hdr-burger" id="hdrBurger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="mob-nav-overlay" id="mobNavOverlay"></div>
+<div class="mob-nav-drawer" id="mobNavDrawer">
+  <div class="mob-nav-head">
+    <img src="{% static 'img/logo.png' %}" alt="{{ site_config.site_name }}">
+    <button class="mob-nav-close" id="mobNavClose" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <nav class="mob-nav-links">
+    <a href="{% url 'index' %}" class="{% if request.path == '/' %}mob-active{% endif %}">Home</a>
+    <a href="{% url 'products' %}" class="{% if request.path == '/products/' %}mob-active{% endif %}">Products</a>
+    <a href="{% url 'blog_list' %}" class="{% if request.path == '/blog/' %}mob-active{% endif %}">Blog</a>
+    <div class="mob-acc">
+      <button class="mob-acc-toggle">About <i class="bi bi-chevron-down"></i></button>
+      <div class="mob-acc-body">
+        <a href="{% url 'about' %}">About Us</a>
+        <a href="{% url 'about' %}#team">Our Team</a>
+        <a href="{% url 'about' %}#certifications">Certifications</a>
+      </div>
+    </div>
+    <a href="{% url 'contact' %}" class="{% if request.path == '/contact/' %}mob-active{% endif %}">Contact</a>
+  </nav>
+  <div class="mob-nav-footer">
+    <div class="mob-nav-socials">
+      {% if site_config.facebook_url %}<a href="{{ site_config.facebook_url }}" target="_blank"><i class="bi bi-facebook"></i></a>{% endif %}
+      {% if site_config.instagram_url %}<a href="{{ site_config.instagram_url }}" target="_blank"><i class="bi bi-instagram"></i></a>{% endif %}
+      {% if site_config.linkedin_url %}<a href="{{ site_config.linkedin_url }}" target="_blank"><i class="bi bi-linkedin"></i></a>{% endif %}
+      {% if site_config.twitter_url %}<a href="{{ site_config.twitter_url }}" target="_blank"><i class="bi bi-twitter"></i></a>{% endif %}
+    </div>
+    <a href="{% url 'contact' %}" class="mob-cta">Get In Touch</a>
+  </div>
+</div>
+
+{% block content %}{% endblock %}
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 footer-contact mb-4 mb-lg-0">
+          <h3>{{ site_config.site_name }}</h3>
+          <p>{{ site_config.contact_address_line1 }}<br>{{ site_config.contact_address_line2 }}<br>{{ site_config.contact_city }}<br>{{ site_config.contact_postal }}<br><br>
+          {% if site_config.contact_phone1 %}<strong>Phone:</strong> {{ site_config.contact_phone1 }}<br>{% endif %}
+          {% if site_config.contact_phone2 %}<strong>Phone:</strong> {{ site_config.contact_phone2 }}<br>{% endif %}
+          <strong>Email:</strong> {{ site_config.contact_email1 }}</p>
+        </div>
+        <div class="col-lg-2 col-md-6 footer-links mb-4 mb-lg-0">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'index' %}">Home</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'about' %}">About Us</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'products' %}">Products</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'about' %}#certifications">Certifications</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'contact' %}">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3 col-md-6 footer-links mb-4 mb-lg-0">
+          <h4>Our Products</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'products' %}#rice">Premium Rice</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'products' %}#flour">Quality Flour</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'products' %}#produce">Agricultural Produce</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3 col-md-6 footer-newsletter">
+          <h4>Newsletter</h4>
+          <p>Subscribe for updates on new products and special offers</p>
+          <form action="#" method="post">{% csrf_token %}
+            <input type="email" name="email" placeholder="Your Email" required>
+            <input type="submit" value="Subscribe">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom container d-md-flex py-4 align-items-center">
+    <div class="me-md-auto text-center text-md-start">
+      <div class="copyright">&copy; Copyright <strong>{{ site_config.site_name }}</strong>. All Rights Reserved<br>
+        <small>{% if site_config.footer_developer_url %}<a href="{{ site_config.footer_developer_url }}" target="_blank" rel="noopener noreferrer">{{ site_config.footer_developer_text }}</a>{% else %}{{ site_config.footer_developer_text }}{% endif %}</small>
+      </div>
+    </div>
+    <div class="social-links text-center text-md-end pt-3 pt-md-0">
+      {% if site_config.twitter_url %}<a href="{{ site_config.twitter_url }}" target="_blank"><i class="bi bi-twitter"></i></a>{% endif %}
+      {% if site_config.facebook_url %}<a href="{{ site_config.facebook_url }}" target="_blank"><i class="bi bi-facebook"></i></a>{% endif %}
+      {% if site_config.instagram_url %}<a href="{{ site_config.instagram_url }}" target="_blank"><i class="bi bi-instagram"></i></a>{% endif %}
+      {% if site_config.linkedin_url %}<a href="{{ site_config.linkedin_url }}" target="_blank"><i class="bi bi-linkedin"></i></a>{% endif %}
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="back-to-top" id="backToTop"><i class="bi bi-arrow-up-short"></i></a>
+
+{% if site_config.whatsapp_number %}
+<a href="https://wa.me/{{ site_config.whatsapp_number|cut:'+'|cut:' ' }}?text={{ site_config.whatsapp_message|urlencode }}"
+   class="whatsapp-float" target="_blank" rel="noopener noreferrer" id="whatsapp-button">
+  <i class="bi bi-whatsapp"></i>
+</a>
+{% endif %}
+
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+(function(){
+  /* Header scroll */
+  var hdr=document.getElementById('site-header');
+  window.addEventListener('scroll',function(){
+    hdr.classList.toggle('scrolled',window.scrollY>60);
+    var b=document.getElementById('backToTop');
+    if(b) b.classList.toggle('active',window.scrollY>120);
+  },{passive:true});
+
+  /* Mobile drawer */
+  var burger=document.getElementById('hdrBurger'),
+      drawer=document.getElementById('mobNavDrawer'),
+      overlay=document.getElementById('mobNavOverlay'),
+      closeBtn=document.getElementById('mobNavClose');
+
+  function openMenu(){drawer.classList.add('open');overlay.classList.add('open');burger.classList.add('open');document.body.classList.add('menu-open');}
+  function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('open');burger.classList.remove('open');document.body.classList.remove('menu-open');}
+
+  if(burger) burger.addEventListener('click',openMenu);
+  if(closeBtn) closeBtn.addEventListener('click',closeMenu);
+  if(overlay) overlay.addEventListener('click',closeMenu);
+
+  document.querySelectorAll('.mob-nav-links>a,.mob-acc-body a,.mob-cta').forEach(function(a){a.addEventListener('click',closeMenu);});
+
+  document.querySelectorAll('.mob-acc-toggle').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var body=this.nextElementSibling,open=body.classList.contains('open');
+      document.querySelectorAll('.mob-acc-body').forEach(function(b){b.classList.remove('open');});
+      document.querySelectorAll('.mob-acc-toggle').forEach(function(b){b.classList.remove('open');});
+      if(!open){body.classList.add('open');this.classList.add('open');}
+    });
+  });
+
+  /* Scroll reveal */
+  var revEls=document.querySelectorAll('[data-reveal]');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target);}});
+    },{threshold:0.12});
+    revEls.forEach(function(el){io.observe(el);});
+  } else { revEls.forEach(function(el){el.classList.add('revealed');}); }
+
+  /* Back to top */
+  var btt=document.getElementById('backToTop');
+  if(btt) btt.addEventListener('click',function(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});
+
+  /* Hero indicators */
+  var ind=document.getElementById('hero-carousel-indicators'),
+      items=document.querySelectorAll('#heroCarousel .carousel-item');
+  if(ind&&items.length){items.forEach(function(item,i){var li=document.createElement('li');li.setAttribute('data-bs-target','#heroCarousel');li.setAttribute('data-bs-slide-to',i);if(i===0)li.classList.add('active');ind.appendChild(li);});}
+
+  /* WA tracking */
+  {% if site_config.whatsapp_number %}
+  var wa=document.getElementById('whatsapp-button');
+  if(wa) wa.addEventListener('click',function(){if(typeof gtag==='function')gtag('event','click',{event_category:'engagement',event_label:'WhatsApp Button'});});
+  {% endif %}
+})();
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

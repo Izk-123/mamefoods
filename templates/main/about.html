@@ -1,0 +1,127 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}About Us - {{ site_config.site_name }}{% endblock %}
+
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>About Us</h2>
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li>About</li>
+        </ol>
+      </div>
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <!-- ======= Dynamic About Us Section (premium layout) ======= -->
+  <section id="about-us" class="about-us section-white">
+    <div class="container" data-aos="fade-up">
+      <div class="row content align-items-center g-5">
+        <div class="col-lg-6" data-aos="fade-right">
+          <h2>{{ site_config.about_title }}</h2>
+          <h3>{{ site_config.about_subtitle }}</h3>
+          <p>{{ site_config.about_description }}</p>
+          <ul class="about-bullets">
+            <li><i class="bi bi-check-circle-fill"></i> {{ site_config.about_bullet1 }}</li>
+            <li><i class="bi bi-check-circle-fill"></i> {{ site_config.about_bullet2 }}</li>
+            <li><i class="bi bi-check-circle-fill"></i> {{ site_config.about_bullet3 }}</li>
+          </ul>
+          <p class="about-closing">{{ site_config.about_closing }}</p>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+          <div class="about-visual">
+            <img src="{% static 'img/about.jpg' %}" alt="About MAME Foods" onerror="this.style.display='none'">
+            <div class="about-visual-badge">
+              <strong>Since 2020</strong>
+              <span>Trusted across Malawi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- End About Us Section -->
+
+  <!-- ======= Team Section (model-driven) ======= -->
+  <section id="team" class="team">
+    <div class="container">
+      <div class="section-title" data-aos="fade-up">
+        <div class="section-label">The People</div>
+        <h2>Our <strong>Team</strong></h2>
+        <p>The passionate people behind {{ site_config.site_name }}</p>
+      </div>
+
+      <div class="row">
+        {% for member in team_members %}
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+          <div class="member" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+            <div class="member-img">
+              {% if member.image %}
+              <img src="{{ member.image.url }}" class="img-fluid" alt="{{ member.name }}">
+              {% else %}
+              <div class="placeholder-image">
+                <i class="bi bi-person-circle"></i>
+              </div>
+              {% endif %}
+              <div class="social">
+                {% if member.twitter %}<a href="{{ member.twitter }}" target="_blank"><i class="bi bi-twitter"></i></a>{% endif %}
+                {% if member.facebook %}<a href="{{ member.facebook }}" target="_blank"><i class="bi bi-facebook"></i></a>{% endif %}
+                {% if member.instagram %}<a href="{{ member.instagram }}" target="_blank"><i class="bi bi-instagram"></i></a>{% endif %}
+                {% if member.linkedin %}<a href="{{ member.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>{% endif %}
+              </div>
+            </div>
+            <div class="member-info">
+              <h4>{{ member.name }}</h4>
+              <span>{{ member.position }}</span>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+          <div class="no-team-message" data-aos="fade-up">
+            <i class="bi bi-people display-1 text-muted mb-3"></i>
+            <h4>Our Team Details Are Coming Soon</h4>
+            <p class="text-muted">We're preparing to introduce the amazing people behind our company</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section><!-- End Team Section -->
+
+  <!-- ======= Certifications Section ======= -->
+  <section id="certifications" class="clients section-white">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <div class="section-label">Trust & Quality</div>
+        <h2>Our Certifications</h2>
+        <p>Quality assurance and standards compliance</p>
+      </div>
+
+      {% if certifications %}
+      <div class="cert-grid" data-aos="fade-up">
+        {% for certification in certifications %}
+        <div class="cert-card">
+          <img src="{{ certification.logo.url }}" class="certification-logo" alt="{{ certification.name }}">
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="row justify-content-center">
+        <div class="col-md-8 text-center py-5">
+          <div class="icon-box">
+            <i class="bi bi-file-earmark-text"></i>
+            <h4>Certifications in Progress</h4>
+            <p>Our products are currently undergoing certification. We'll update this section soon!</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section><!-- End Certifications Section -->
+</main>
+{% endblock %}

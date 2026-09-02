@@ -1,0 +1,46 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Message Sent - MAME Foods{% endblock %}
+
+{% block content %}
+  <main id="main">
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Message Sent</h2>
+          <ol>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li>Success</li>
+          </ol>
+        </div>
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!-- ======= Success Section ======= -->
+    <section id="success" class="success">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <div class="icon-box" style="font-size: 5rem; color: #18d26e;">
+              <i class="bi bi-check-circle"></i>
+            </div>
+            <h2>Thank You!</h2>
+            <p class="lead">Your message has been successfully sent.</p>
+            <p>We've received your inquiry and will respond to you within 24-48 hours.</p>
+            <div class="mt-4">
+              <a href="{% url 'index' %}" class="btn-get-started" style="margin-right:10px;">
+                <i class="bi bi-house-door me-2"></i>Return to Home
+              </a>
+              <a href="{% url 'products' %}" class="btn-get-started">
+                <i class="bi bi-bag me-2"></i>View Our Products
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Success Section -->
+  </main>
+{% endblock %}

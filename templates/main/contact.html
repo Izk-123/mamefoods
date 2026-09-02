@@ -1,0 +1,208 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Contact Us - {{ site_config.site_name }}{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .contact .php-email-form .error-message {
+      display: none;
+      color: #fff;
+      background: #ed3c0d;
+      text-align: left;
+      padding: 15px;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+    .contact .php-email-form .sent-message {
+      display: none;
+      color: #fff;
+      background: #18d26e;
+      text-align: center;
+      padding: 15px;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+    .contact .php-email-form .loading {
+      display: none;
+      background: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-bottom: 24px;
+    }
+    .is-invalid {
+      border-color: #dc3545 !important;
+    }
+    .invalid-feedback {
+      display: block;
+      width: 100%;
+      margin-top: 0.25rem;
+      font-size: 0.875em;
+      color: #dc3545;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Contact</h2>
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li>Contact</li>
+        </ol>
+      </div>
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <!-- ======= Google Map (dynamic) ======= -->
+  {% if site_config.google_maps_embed_url %}
+  <div class="map-section">
+    <iframe style="border:0; width: 100%; height: 350px;"
+      src="{{ site_config.google_maps_embed_url }}"
+      frameborder="0" allowfullscreen></iframe>
+  </div>
+  {% endif %}
+
+  <section id="contact" class="contact">
+    <div class="container">
+      <!-- ======= Contact Info ======= -->
+      <div class="row justify-content-center" data-aos="fade-up">
+        <div class="col-lg-10">
+          <div class="info-wrap">
+            <div class="row">
+              <div class="col-lg-4 info">
+                <i class="bi bi-geo-alt"></i>
+                <h4>Location:</h4>
+                <p>{{ site_config.contact_address_line1 }}<br>{{ site_config.contact_address_line2 }}</p>
+                <p>{{ site_config.contact_city }}<br>{{ site_config.contact_postal }}</p>
+              </div>
+
+              <div class="col-lg-4 info mt-4 mt-lg-0">
+                <i class="bi bi-envelope"></i>
+                <h4>Email:</h4>
+                <p>{{ site_config.contact_email1 }}</p>
+                {% if site_config.contact_email2 %}
+                <p>{{ site_config.contact_email2 }}</p>
+                {% endif %}
+              </div>
+
+              <div class="col-lg-4 info mt-4 mt-lg-0">
+                <i class="bi bi-phone"></i>
+                <h4>Call:</h4>
+                <p>{{ site_config.contact_phone1 }}</p>
+                {% if site_config.contact_phone2 %}
+                <p>{{ site_config.contact_phone2 }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= Contact Form (AJAX) ======= -->
+      <div class="row mt-5 justify-content-center" data-aos="fade-up">
+        <div class="col-lg-10">
+          <form method="post" class="php-email-form">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+              </div>
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+            </div>
+            <div class="form-group mt-3">
+              <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+            </div>
+            <div class="my-3">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+            </div>
+            <div class="text-center">
+              <button type="submit">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section><!-- End Contact Section -->
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('.php-email-form');
+  
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const loading = form.querySelector('.loading');
+    const errorElement = form.querySelector('.error-message');
+    const success = form.querySelector('.sent-message');
+    
+    loading.style.display = 'block';
+    errorElement.style.display = 'none';
+    success.style.display = 'none';
+    
+    // Clear previous error messages
+    const errorMessages = form.querySelectorAll('.invalid-feedback');
+    errorMessages.forEach(el => el.remove());
+    
+    fetch("{% url 'contact' %}", {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => {
+      if (response.status === 400) {
+        return response.json();
+      } else if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Server error');
+    })
+    .then(data => {
+      loading.style.display = 'none';
+      
+      if (data.status === 'success') {
+        success.style.display = 'block';
+        form.reset();
+      } else if (data.status === 'error') {
+        errorElement.innerHTML = data.message;
+        errorElement.style.display = 'block';
+        
+        if (data.errors) {
+          for (const field in data.errors) {
+            const input = form.querySelector(`[name="${field}"]`);
+            if (input) {
+              const errorDiv = document.createElement('div');
+              errorDiv.className = 'invalid-feedback';
+              errorDiv.innerHTML = data.errors[field][0];
+              input.parentNode.appendChild(errorDiv);
+            }
+          }
+        }
+      }
+    })
+    .catch(error => {
+      loading.style.display = 'none';
+      errorElement.innerHTML = 'An error occurred, please try again later.';
+      errorElement.style.display = 'block';
+    });
+  });
+});
+</script>
+{% endblock %}

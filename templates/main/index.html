@@ -1,0 +1,188 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Quality Food Products from Malawi{% endblock %}
+
+{% block content %}
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+  <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner" role="listbox">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active"
+        style="background-image: url({% if site_config.hero_slide1_image %}{{ site_config.hero_slide1_image.url }}{% else %}{% static 'img/slide/slide-1.jpg' %}{% endif %});">
+        <div class="carousel-container">
+          <div class="carousel-content animate__animated animate__fadeInUp">
+            <div class="hero-tag"><span></span>Malawi's Finest</div>
+            <h2>{{ site_config.hero_slide1_title }}</h2>
+            <p>{{ site_config.hero_slide1_subtitle }}</p>
+            <a href="{{ site_config.hero_slide1_button_link|default:'#about-us' }}" class="btn-get-started">
+              {{ site_config.hero_slide1_button_text|default:"Discover More" }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item"
+        style="background-image: url({% if site_config.hero_slide2_image %}{{ site_config.hero_slide2_image.url }}{% else %}{% static 'img/slide/slide-2.jpg' %}{% endif %});">
+        <div class="carousel-container">
+          <div class="carousel-content animate__animated animate__fadeInUp">
+            <div class="hero-tag"><span></span>Premium Quality</div>
+            <h2>{{ site_config.hero_slide2_title }}</h2>
+            <p>{{ site_config.hero_slide2_subtitle }}</p>
+            <a href="{{ site_config.hero_slide2_button_link|default:'#products' }}" class="btn-get-started">
+              {{ site_config.hero_slide2_button_text|default:"Our Products" }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-item"
+        style="background-image: url({% if site_config.hero_slide3_image %}{{ site_config.hero_slide3_image.url }}{% else %}{% static 'img/slide/slide-3.jpg' %}{% endif %});">
+        <div class="carousel-container">
+          <div class="carousel-content animate__animated animate__fadeInUp">
+            <div class="hero-tag"><span></span>Certified Standards</div>
+            <h2>{{ site_config.hero_slide3_title }}</h2>
+            <p>{{ site_config.hero_slide3_subtitle }}</p>
+            <a href="{{ site_config.hero_slide3_button_link|default:'#certifications' }}" class="btn-get-started">
+              {{ site_config.hero_slide3_button_text|default:"Our Certifications" }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+    </a>
+    <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+      <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+    </a>
+    <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+  </div>
+
+  <!-- Glass stats bar -->
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-label">Natural</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">MBS</div><div class="hero-stat-label">Pre-Certified</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">3+</div><div class="hero-stat-label">Product Lines</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">MW</div><div class="hero-stat-label">Made in Malawi</div></div>
+  </div>
+</section><!-- End Hero -->
+
+<main id="main">
+
+  <!-- ======= About Us Section (togglable) ======= -->
+  {% if site_config.show_about_section %}
+  <section id="about-us" class="about-us section-white">
+    <div class="container">
+      <div class="section-title" data-reveal>
+        <div class="section-label">Who We Are</div>
+        <h2>{{ site_config.about_title }}</h2>
+        <p>{{ site_config.about_subtitle }}</p>
+      </div>
+      <div class="row content align-items-center g-5">
+        <div class="col-lg-6" data-reveal data-reveal-delay="1">
+          <p>{{ site_config.about_description }}</p>
+          <ul class="about-bullets">
+            <li><i class="bi bi-check-circle-fill"></i> {{ site_config.about_bullet1 }}</li>
+            <li><i class="bi bi-check-circle-fill"></i> {{ site_config.about_bullet2 }}</li>
+            <li><i class="bi bi-check-circle-fill"></i> {{ site_config.about_bullet3 }}</li>
+          </ul>
+          <p class="about-closing">{{ site_config.about_closing }}</p>
+        </div>
+        <div class="col-lg-6" data-reveal data-reveal-delay="2">
+          <div class="about-visual">
+            <img src="{% static 'img/about.jpg' %}" alt="About MAME Foods" onerror="this.style.display='none'">
+            <div class="about-visual-badge">
+              <strong>Since 2020</strong>
+              <span>Trusted across Malawi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+  <!-- End About Us Section -->
+
+  <!-- ======= Products Section (togglable) ======= -->
+  {% if site_config.show_products_section %}
+  <section id="products" class="services">
+    <div class="container">
+      <div class="section-title" data-reveal>
+        <div class="section-label">What We Offer</div>
+        <h2>{{ site_config.products_section_title }}</h2>
+        <p>{{ site_config.products_section_subtitle }}</p>
+      </div>
+      <div class="row g-4">
+        {% if featured_products %}
+        {% for product in featured_products %}
+        <div class="col-lg-4 col-md-6 d-flex" data-reveal data-reveal-delay="{{ forloop.counter }}">
+          <div class="product-card">
+            <!-- Product image or elegant placeholder -->
+            {% if product.image %}
+            <div class="product-img-wrap">
+              <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name }}">
+            </div>
+            {% else %}
+            <div class="product-img-placeholder">
+              <i class="{{ product.category.icon_class }}"></i>
+            </div>
+            {% endif %}
+            <h4><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></h4>
+            <p>{{ product.description|truncatewords:20 }}</p>
+            <div class="quality-badges">
+              {% if product.is_featured %}<span class="quality-badge premium">Premium</span>{% endif %}
+              {% if product.is_organic %}<span class="quality-badge">Organic</span>{% endif %}
+              <span class="quality-badge">{{ product.get_certification_status_display }}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-12 text-center py-5">
+          <div class="icon-box"><i class="bi bi-exclamation-triangle"></i><h4>No Products Available</h4><p>We're currently preparing our products. Please check back soon!</p></div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+  <!-- End Products Section -->
+
+  <!-- ======= Certifications Section (togglable) ======= -->
+  {% if site_config.show_certifications_section %}
+  <section id="certifications" class="clients section-white">
+    <div class="container">
+      <div class="section-title" data-reveal>
+        <div class="section-label">Trust & Quality</div>
+        <h2>{{ site_config.certifications_section_title }}</h2>
+        <p>{{ site_config.certifications_section_subtitle }}</p>
+      </div>
+      {% if certifications %}
+      <div class="cert-grid" data-reveal data-reveal-delay="1">
+        {% for certification in certifications %}
+        <div class="cert-card">
+          <img src="{{ certification.logo.url }}" class="certification-logo" alt="{{ certification.name }}">
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="row justify-content-center">
+        <div class="col-md-8 text-center py-5">
+          <div class="icon-box"><i class="bi bi-file-earmark-text"></i><h4>Certifications in Progress</h4><p>We'll update this section soon!</p></div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+  {% endif %}
+  <!-- End Certifications Section -->
+
+</main>
+{% endblock %}
