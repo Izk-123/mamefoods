@@ -117,7 +117,7 @@ SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'
 SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'False') == 'True'
 CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'False') == 'True'
 
-# ---------- Unfold admin configuration (corrected) ----------
+# ---------- Unfold admin configuration (fully corrected) ----------
 from django.templatetags.static import static
 
 UNFOLD = {
@@ -145,20 +145,40 @@ UNFOLD = {
         "show_search": True,
         "show_all_applications": True,
         "navigation": [
-            {"title": "Dashboard", "icon": "dashboard", "link": "/admin"},
+            {
+                "title": "Dashboard",
+                "icon": "dashboard",
+                "link": "/admin",
+                "items": []          # <-- added empty items
+            },
             {
                 "title": "Products",
                 "icon": "shopping_bag",
-                "items": [               # <-- CHANGED from "links" to "items"
+                "items": [
                     {"title": "Categories", "link": "/admin/main/productcategory/"},
                     {"title": "Products", "link": "/admin/main/product/"},
                     {"title": "Variants", "link": "/admin/main/productvariant/"},
                     {"title": "Images", "link": "/admin/main/productimage/"},
                 ],
             },
-            {"title": "Team", "icon": "people", "link": "/admin/main/teammember/"},
-            {"title": "Certifications", "icon": "verified", "link": "/admin/main/certification/"},
-            {"title": "Messages", "icon": "email", "link": "/admin/main/contactmessage/"},
+            {
+                "title": "Team",
+                "icon": "people",
+                "link": "/admin/main/teammember/",
+                "items": []          # <-- added empty items
+            },
+            {
+                "title": "Certifications",
+                "icon": "verified",
+                "link": "/admin/main/certification/",
+                "items": []          # <-- added empty items
+            },
+            {
+                "title": "Messages",
+                "icon": "email",
+                "link": "/admin/main/contactmessage/",
+                "items": []          # <-- added empty items
+            },
         ],
     },
 }
