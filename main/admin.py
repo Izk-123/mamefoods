@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django import forms
 from django.utils.safestring import mark_safe
+from django.db import models
 from .models import (
     BlogPost, Category, ProductCategory, Product, ProductVariant,
     ProductImage, Tag, TeamMember, Certification,
