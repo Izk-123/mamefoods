@@ -1,14 +1,14 @@
 {% load static %}
-<div class="dropzone" id="dropzone-{{ widget.attrs.id }}">
+<div class="dropzone" id="{{ widget.attrs.id }}">
     <div class="dz-message">
         <p>Drag & drop an image here, or click to select</p>
     </div>
-    {{ widget.input }}
+    {{ widget }}
 </div>
 
 <script>
     (function() {
-        const dropzone = document.getElementById('dropzone-{{ widget.attrs.id }}');
+        const dropzone = document.getElementById('{{ widget.attrs.id }}');
         const fileInput = dropzone.querySelector('input[type="file"]');
 
         dropzone.addEventListener('dragover', (e) => {
@@ -25,17 +25,28 @@
             dropzone.classList.remove('dragover');
             if (e.dataTransfer.files.length) {
                 fileInput.files = e.dataTransfer.files;
-                // Trigger HTMX to upload the file asynchronously
+                // Trigger HTMX change event if you want to upload automatically
                 htmx.trigger(fileInput, 'change');
             }
         });
 
         fileInput.addEventListener('change', (e) => {
-            // Show preview or upload via HTMX
             const file = e.target.files[0];
             if (file) {
-                // Here you can upload via HTMX or just display the file name
-                console.log('Selected file:', file.name);
+                // Show a preview
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    let preview = dropzone.querySelector('img');
+                    if (!preview) {
+                        preview = document.createElement('img');
+                        preview.style.maxWidth = '100%';
+                        preview.style.maxHeight = '150px';
+                        preview.style.marginTop = '10px';
+                        dropzone.appendChild(preview);
+                    }
+                    preview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         });
     })();
