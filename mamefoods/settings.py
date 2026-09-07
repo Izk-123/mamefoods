@@ -62,7 +62,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'main.context_processors.site_config',
-                'django_htmx.context_processors.hx_request',  # for HTMX
+                # 'django_htmx.context_processors.hx_request',  # for HTMX
             ],
         },
     },
