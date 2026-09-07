@@ -1,11 +1,27 @@
 from django.contrib import admin
+from django import forms
+from django.utils.safestring import mark_safe
 from .models import (
     BlogPost, Category, ProductCategory, Product, ProductVariant,
     ProductImage, Tag, TeamMember, Certification,
     ContactMessage, SiteConfiguration
 )
 
-# Inline Admin Classes
+# ---------- Custom Drag-and-Drop Widget ----------
+class DragDropImageWidget(forms.ClearableFileInput):
+    """
+    A widget that renders a drag-and-drop zone for file uploads.
+    Uses HTMX for optional async upload, but works without it.
+    """
+    template_name = 'widgets/dragdrop_image_widget.html'
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        # Add a unique ID for the dropzone
+        context['widget']['attrs']['id'] = f"dropzone-{name}"
+        return context
+
+# ---------- Inline Admin Classes ----------
 class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
     extra = 1
@@ -19,8 +35,11 @@ class ProductImageInline(admin.TabularInline):
     extra = 1
     fields = ['image', 'caption', 'is_primary', 'display_order']
     classes = ['collapse']
+    formfield_overrides = {
+        models.ImageField: {'widget': DragDropImageWidget},  # Apply widget for ImageField
+    }
 
-# Custom Admin Classes
+# ---------- Custom Admin Classes ----------
 @admin.register(ProductCategory)
 class ProductCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'display_order', 'product_count']
@@ -82,18 +101,23 @@ class ProductImageAdmin(admin.ModelAdmin):
     list_editable = ['is_primary', 'display_order']
     list_filter = ['product']
     search_fields = ['product__name', 'caption']
+    formfield_overrides = {
+        models.ImageField: {'widget': DragDropImageWidget},  # Apply widget
+    }
 
     def thumbnail(self, obj):
         if obj.image:
-            return f'<img src="{obj.image.url}" width="50" height="50" />'
+            return mark_safe(f'<img src="{obj.image.url}" width="50" height="50" />')
         return '-'
-    thumbnail.allow_tags = True
     thumbnail.short_description = 'Preview'
 
 @admin.register(TeamMember)
 class TeamMemberAdmin(admin.ModelAdmin):
     list_display = ['name', 'position', 'thumbnail']
     search_fields = ['name', 'position']
+    formfield_overrides = {
+        models.ImageField: {'widget': DragDropImageWidget},
+    }
     fieldsets = (
         ('Personal Info', {
             'fields': ('name', 'position', 'bio')
@@ -109,9 +133,8 @@ class TeamMemberAdmin(admin.ModelAdmin):
 
     def thumbnail(self, obj):
         if obj.image:
-            return f'<img src="{obj.image.url}" width="50" height="50" />'
+            return mark_safe(f'<img src="{obj.image.url}" width="50" height="50" />')
         return '-'
-    thumbnail.allow_tags = True
     thumbnail.short_description = 'Photo'
 
 @admin.register(Certification)
@@ -119,12 +142,14 @@ class CertificationAdmin(admin.ModelAdmin):
     list_display = ['name', 'thumbnail']
     search_fields = ['name']
     ordering = ['name']
+    formfield_overrides = {
+        models.ImageField: {'widget': DragDropImageWidget},
+    }
 
     def thumbnail(self, obj):
         if obj.logo:
-            return f'<img src="{obj.logo.url}" width="50" height="50" />'
+            return mark_safe(f'<img src="{obj.logo.url}" width="50" height="50" />')
         return '-'
-    thumbnail.allow_tags = True
     thumbnail.short_description = 'Logo'
 
 @admin.register(ContactMessage)
@@ -150,18 +175,19 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at')
     prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ('categories', 'tags')
+    formfield_overrides = {
+        models.ImageField: {'widget': DragDropImageWidget},
+    }
 
 admin.site.register(Category)
 admin.site.register(Tag)
 
-
 # =====================================================================
-# SITE CONFIGURATION (Singleton) – control all dynamic content from here
+# SITE CONFIGURATION (Singleton)
 # =====================================================================
 @admin.register(SiteConfiguration)
 class SiteConfigurationAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
-        # Only one instance allowed
         return not SiteConfiguration.objects.exists()
 
     fieldsets = (
@@ -219,7 +245,6 @@ class SiteConfigurationAdmin(admin.ModelAdmin):
             'fields': ('footer_developer_text', 'footer_developer_url'),
         }),
     )
-
 
 # Admin Site Customization
 admin.site.site_header = "MAME Foods Administration"
