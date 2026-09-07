@@ -89,3 +89,19 @@ def blog_list(request):
 def blog_detail(request, slug):
     post = get_object_or_404(BlogPost, slug=slug)
     return render(request, 'main/blog-single.html', {'post': post})
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+
+def htmx_product_list(request):
+    """
+    Returns a partial HTML list of products filtered by category for HTMX.
+    Useful in admin or front-end for dynamic filtering.
+    """
+    category_id = request.GET.get('category')
+    products = Product.objects.all()
+    if category_id:
+        products = products.filter(category_id=category_id)
+    
+    html = render_to_string('partials/product_list.html', {'products': products})
+    return HttpResponse(html)
