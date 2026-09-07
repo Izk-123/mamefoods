@@ -62,7 +62,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'main.context_processors.site_config',
-                # 'django_htmx.context_processors.hx_request',  # for HTMX
+                # 'django_htmx.context_processors.hx_request',  # REMOVED - does not exist
             ],
         },
     },
@@ -117,7 +117,7 @@ SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'
 SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'False') == 'True'
 CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'False') == 'True'
 
-# ---------- Unfold admin configuration ----------
+# ---------- Unfold admin configuration (corrected) ----------
 from django.templatetags.static import static
 
 UNFOLD = {
@@ -149,7 +149,7 @@ UNFOLD = {
             {
                 "title": "Products",
                 "icon": "shopping_bag",
-                "links": [
+                "items": [               # <-- CHANGED from "links" to "items"
                     {"title": "Categories", "link": "/admin/main/productcategory/"},
                     {"title": "Products", "link": "/admin/main/product/"},
                     {"title": "Variants", "link": "/admin/main/productvariant/"},
