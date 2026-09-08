@@ -1,146 +1,357 @@
-/* Based on poster colors */
+/* ============================================================
+   MAMEFOODS Admin — Unfold theme add-ons
+   Loaded via UNFOLD["STYLES"] in settings.py
+
+   IMPORTANT: Unfold's own layout (header, sidebar, topbar, forms)
+   is built with Tailwind utility classes that are compiled/purged
+   per-release — there is no stable ".sidebar" / ".card" / ".btn"
+   selector to hook into like AdminLTE or Jazzmin. Brand colors,
+   logo, radius, dashboard callback etc. are configured through
+   UNFOLD = {...} in settings.py instead (already done for you).
+
+   This file only styles:
+     1. Custom brand tokens (kept in sync with UNFOLD["COLORS"])
+     2. Our own dashboard.html (fully custom markup we control)
+     3. Our own drag & drop upload widget (fully custom markup)
+
+   Dark mode: Unfold toggles a `dark` class on <html> (Tailwind's
+   class strategy via Alpine.js), so every dark override below is
+   scoped with ".dark ..." — no data-theme attribute is used.
+============================================================ */
+
 :root {
-    --primary: #0a2e5a;
-    --secondary: #ffcc00;
-    --dark: #0a2e5a;
-    --light: #f8f9fa;
+    --mf-green: #1a9e30;
+    --mf-green-dark: #127022;
+    --mf-green-light: #2ecc4a;
+    --mf-gold: #d4af37;
+    --mf-gold-dark: #b8962e;
+
+    --mf-surface: #ffffff;
+    --mf-surface-2: #f8fcf9;
+    --mf-bg: #faf7f2;
+    --mf-text: #1c1c1e;
+    --mf-text-muted: #6b7280;
+    --mf-border: rgba(0, 0, 0, 0.08);
+
+    --mf-radius-sm: 8px;
+    --mf-radius: 14px;
+    --mf-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
+    --mf-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.14);
 }
 
-/* Header styling */
-#header {
-    background-color: var(--primary) !important;
-    color: white !important;
-    border-bottom: 2px solid var(--secondary) !important;
+.dark {
+    --mf-surface: #161d18;
+    --mf-surface-2: #1b241d;
+    --mf-bg: #0d1310;
+    --mf-text: #f3f4f2;
+    --mf-text-muted: #9ca39c;
+    --mf-border: rgba(255, 255, 255, 0.08);
+
+    --mf-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 20px rgba(0, 0, 0, 0.4);
+    --mf-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.55);
 }
 
-/* Brand text styling */
-.brand-text {
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+/* ============================================================
+   CUSTOM DASHBOARD (main/templates/admin/dashboard.html)
+   Mobile-first: single column by default, CSS Grid auto-fits
+   more columns as space allows — no manual breakpoints needed.
+============================================================ */
+.mf-dashboard {
+    color: var(--mf-text);
 }
 
-.brand-text .text-primary {
-    color: white !important;
+.mf-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
 }
 
-.brand-text .text-secondary {
-    color: var(--secondary) !important;
-    font-style: italic;
+.mf-stat-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--mf-surface);
+    border: 1px solid var(--mf-border);
+    border-radius: var(--mf-radius);
+    box-shadow: var(--mf-shadow);
+    padding: 18px;
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    text-decoration: none !important;
 }
 
-/* Button styling */
-.btn-primary {
-    background-color: var(--primary) !important;
-    border-color: var(--primary) !important;
+.mf-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--mf-shadow-lg);
 }
 
-.btn-warning {
-    background-color: var(--secondary) !important;
-    border-color: var(--secondary) !important;
-    color: var(--primary) !important;
-}
-
-/* Sidebar styling */
-.sidebar-dark-warning .nav-sidebar > .nav-item > .nav-link.active, 
-.sidebar-light-warning .nav-sidebar > .nav-item > .nav-link.active {
-    background-color: var(--secondary) !important;
-    color: var(--primary) !important;
-}
-
-/* Card styling */
-.card {
-    border: 1px solid rgba(10, 46, 90, 0.1);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-
-.card-header {
-    background-color: rgba(10, 46, 90, 0.03);
-    border-bottom: 1px solid rgba(10, 46, 90, 0.1);
-}
-
-/* Table styling */
-.table thead th {
-    background-color: rgba(10, 46, 90, 0.1);
-    color: var(--primary);
-}
-
-/* Custom logo styling */
-.logo-custom {
-    font-family: 'Arial', sans-serif;
-    font-weight: bold;
-    text-align: center;
-    padding: 15px 0;
-}
-
-.logo-custom .brand-main {
-    font-size: 28px;
-    color: white;
-    display: block;
-    letter-spacing: 1.5px;
-}
-
-.logo-custom .brand-tagline {
-    font-size: 18px;
-    color: var(--secondary);
-    font-style: italic;
-    display: block;
-    margin-top: -5px;
-}
-
-.logo-custom .brand-product {
+.mf-stat-card .mf-icon {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 24px;
-    color: white;
-    display: block;
-    margin-top: 5px;
+    color: #fff;
+}
+
+.mf-stat-card .mf-icon.green { background: linear-gradient(135deg, var(--mf-green), var(--mf-green-dark)); }
+.mf-stat-card .mf-icon.gold  { background: linear-gradient(135deg, var(--mf-gold), var(--mf-gold-dark)); }
+.mf-stat-card .mf-icon.blue  { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.mf-stat-card .mf-icon.red   { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+
+.mf-stat-card .mf-value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--mf-text);
+}
+
+.mf-stat-card .mf-label {
+    font-size: 12px;
+    color: var(--mf-text-muted);
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 0.04em;
 }
 
-.logo-custom .brand-premium {
-    font-size: 16px;
-    color: var(--secondary);
+.mf-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 860px) {
+    .mf-grid-2 { grid-template-columns: 1fr 1fr; }
+}
+
+.mf-panel {
+    background: var(--mf-surface);
+    border: 1px solid var(--mf-border);
+    border-radius: var(--mf-radius);
+    box-shadow: var(--mf-shadow);
+    overflow: hidden;
+}
+
+.mf-panel-header {
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 1px solid var(--mf-border);
+    background: var(--mf-surface-2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mf-panel-body { padding: 18px; }
+
+.mf-cert-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    text-align: center;
+}
+
+.mf-cert-row .mf-cert-num { font-size: 22px; font-weight: 700; }
+.mf-cert-row .mf-cert-label { font-size: 11px; color: var(--mf-text-muted); margin-top: 2px; }
+
+.mf-list { list-style: none; margin: 0; padding: 0; }
+.mf-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--mf-border);
+    font-size: 14px;
+}
+.mf-list li:last-child { border-bottom: none; }
+
+.mf-pill {
+    background: var(--mf-green);
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Responsive table -> stacked cards on narrow screens (mobile-first) */
+.mf-table-wrap { overflow-x: auto; }
+.mf-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.mf-table th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mf-text-muted);
+    border-bottom: 2px solid var(--mf-border);
+    padding: 10px 12px;
+}
+.mf-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--mf-border);
+    color: var(--mf-text);
+}
+.mf-table tbody tr:hover { background: rgba(26, 158, 48, 0.06); }
+
+@media (max-width: 640px) {
+    .mf-table thead { display: none; }
+    .mf-table, .mf-table tbody, .mf-table tr, .mf-table td { display: block; width: 100%; }
+    .mf-table tr {
+        border: 1px solid var(--mf-border);
+        border-radius: var(--mf-radius-sm);
+        margin-bottom: 10px;
+        padding: 6px 0;
+    }
+    .mf-table td {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: none;
+        padding: 6px 12px;
+    }
+    .mf-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--mf-text-muted);
+        font-size: 11px;
+        text-transform: uppercase;
+    }
+}
+
+/* ============================================================
+   DRAG & DROP IMAGE UPLOAD WIDGET
+   (widgets/dragdrop_image_widget.html)
+============================================================ */
+.mf-drop {
+    --mf-drop-border: var(--mf-border);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 132px;
+    padding: 20px 16px;
+    border: 2px dashed var(--mf-drop-border);
+    border-radius: var(--mf-radius);
+    background: var(--mf-surface-2);
+    color: var(--mf-text-muted);
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+    outline-offset: 3px;
+}
+
+.mf-drop:hover { border-color: var(--mf-green); }
+
+.mf-drop:focus-within {
+    outline: 2px solid var(--mf-green);
+}
+
+.mf-drop.mf-drop--over {
+    border-color: var(--mf-green);
+    background: rgba(26, 158, 48, 0.08);
+    transform: scale(1.01);
+}
+
+.mf-drop.mf-drop--filled {
+    padding: 12px;
+    align-items: stretch;
+}
+
+.mf-drop .mf-drop-icon {
+    font-size: 30px;
+    color: var(--mf-green);
+}
+
+.mf-drop .mf-drop-text {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.mf-drop .mf-drop-text strong {
+    color: var(--mf-text);
+}
+
+.mf-drop .mf-drop-hint {
+    font-size: 11px;
+    color: var(--mf-text-muted);
+}
+
+/* Native file input: kept functional but visually hidden;
+   the whole .mf-drop area is a <label for="..."> so it stays
+   keyboard- and screen-reader-accessible without JS tricks. */
+.mf-drop input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.mf-drop-preview {
+    position: relative;
+    width: 100%;
+    border-radius: var(--mf-radius-sm);
+    overflow: hidden;
+    background: var(--mf-bg);
+}
+
+.mf-drop-preview img {
     display: block;
-    margin-top: 5px;
-    letter-spacing: 1px;
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
 }
 
-/* Add to bottom of file */
-/* Login page specific styles */
-body.login .logo-custom {
-    padding: 5px 0;
-    transform: scale(0.8);
-    transform-origin: center;
+.mf-drop-preview .mf-drop-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--mf-text);
+    background: var(--mf-surface);
+    border-top: 1px solid var(--mf-border);
 }
 
-body.login .brand-main {
-    font-size: 20px !important;
+.mf-drop-meta .mf-filename {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-body.login .brand-product {
-    font-size: 18px !important;
+.mf-drop-remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
 }
 
-body.login .brand-tagline,
-body.login .brand-premium {
-    display: none;
-}
+.mf-drop-remove:hover { background: #b91c1c; }
 
-/* Add to bottom of file */
-/* Sidebar scrollbar */
-.sidebar {
-    overflow-y: auto !important;
-}
-
-.sidebar::-webkit-scrollbar {
-    width: 8px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-    background: #0a2e5a;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background-color: #ffcc00;
-    border-radius: 4px;
+/* Mobile-first: larger touch target, roomier spacing on small screens */
+@media (max-width: 480px) {
+    .mf-drop { min-height: 110px; padding: 16px 10px; }
+    .mf-drop .mf-drop-icon { font-size: 26px; }
 }
