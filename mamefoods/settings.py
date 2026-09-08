@@ -27,6 +27,8 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 INSTALLED_APPS = [
     'unfold',                     # django-unfold (must be first)
+    'unfold.contrib.filters',     # modern dropdown/range/numeric filters
+    'unfold.contrib.forms',       # WYSIWYG (Trix) + array widgets
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,7 +120,6 @@ SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'False') == 'Tru
 CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'False') == 'True'
 
 # ---------- Logging Configuration ----------
-# Create a logs directory if it doesn't exist
 LOG_DIR = BASE_DIR / 'logs'
 LOG_DIR.mkdir(exist_ok=True)
 
@@ -139,15 +140,15 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
-            'level': 'DEBUG' if DEBUG else 'INFO',  # Show debug output in dev, info in prod
+            'level': 'INFO',
         },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOG_DIR / 'django.log',
-            'maxBytes': 1024 * 1024 * 5,  # 5 MB
+            'maxBytes': 1024 * 1024 * 5,
             'backupCount': 5,
             'formatter': 'verbose',
-            'level': 'ERROR',  # Log errors and above to file
+            'level': 'ERROR',
         },
         'error_file': {
             'class': 'logging.handlers.RotatingFileHandler',
@@ -174,7 +175,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'main': {  # Custom app logger
+        'main': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': True,
@@ -182,40 +183,56 @@ LOGGING = {
     },
 }
 
-# ---------- Unfold admin configuration (fully corrected) ----------
+# ---------- Unfold admin configuration (modern theme aligned with website) ----------
 from django.templatetags.static import static
 
 UNFOLD = {
     "SITE_TITLE": "MAMEFOODS Admin",
-    "SITE_HEADER": "MAMEFOODS",
+    "SITE_HEADER": "MAME FOODS",
     "SITE_URL": "/",
     "SITE_ICON": lambda request: static("img/logo.png"),
     "SITE_LOGO": lambda request: static("img/logo.png"),
+    "SITE_SYMBOL": "restaurant",
+
+    "DASHBOARD_CALLBACK": "main.admin.dashboard_callback",
+    "ENVIRONMENT": "main.admin.environment_callback",
+    "COMMAND": {
+        "search_models": True,
+    },
+
     "COLORS": {
         "primary": {
-            "50": "250 245 255",
-            "100": "243 232 255",
-            "200": "233 213 255",
-            "300": "216 180 254",
-            "400": "192 132 252",
-            "500": "168 85 247",
-            "600": "147 51 234",
-            "700": "126 34 206",
-            "800": "107 33 168",
-            "900": "88 28 135",
-            "950": "59 7 100",
+            "50": "240 253 244",
+            "100": "220 252 231",
+            "200": "187 247 208",
+            "300": "134 239 172",
+            "400": "74 222 128",
+            "500": "26 158 48",
+            "600": "18 112 34",
+            "700": "16 94 28",
+            "800": "15 80 24",
+            "900": "12 60 18",
+            "950": "5 30 8",
+        },
+        "secondary": {
+            "50": "253 246 226",
+            "100": "250 235 195",
+            "200": "244 215 135",
+            "300": "237 195 75",
+            "400": "212 175 55",
+            "500": "200 160 35",
+            "600": "170 130 25",
+            "700": "140 105 20",
+            "800": "110 80 15",
+            "900": "80 60 10",
         },
     },
+
     "SIDEBAR": {
         "show_search": True,
         "show_all_applications": True,
         "navigation": [
-            {
-                "title": "Dashboard",
-                "icon": "dashboard",
-                "link": "/admin",
-                "items": []
-            },
+            {"title": "Dashboard", "icon": "dashboard", "link": "/admin", "items": []},
             {
                 "title": "Products",
                 "icon": "shopping_bag",
@@ -226,24 +243,32 @@ UNFOLD = {
                     {"title": "Images", "link": "/admin/main/productimage/"},
                 ],
             },
+            {"title": "Team", "icon": "people", "link": "/admin/main/teammember/", "items": []},
+            {"title": "Certifications", "icon": "verified", "link": "/admin/main/certification/", "items": []},
+            {"title": "Messages", "icon": "email", "link": "/admin/main/contactmessage/", "items": []},
             {
-                "title": "Team",
-                "icon": "people",
-                "link": "/admin/main/teammember/",
-                "items": []
-            },
-            {
-                "title": "Certifications",
-                "icon": "verified",
-                "link": "/admin/main/certification/",
-                "items": []
-            },
-            {
-                "title": "Messages",
-                "icon": "email",
-                "link": "/admin/main/contactmessage/",
-                "items": []
+                "title": "Blog",
+                "icon": "article",
+                "items": [
+                    {"title": "All Posts", "link": "/admin/main/blogpost/"},
+                    {"title": "Categories", "link": "/admin/main/category/"},
+                    {"title": "Tags", "link": "/admin/main/tag/"},
+                ],
             },
         ],
+    },
+
+    "STYLES": [
+        lambda request: static("admin_custom.css"),
+    ],
+
+    "BORDER_RADIUS": "12px",
+
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+
+    "TABLES": {
+        "DENSITY": "compact",
+        "HOVER": True,
     },
 }
