@@ -1,0 +1,124 @@
+{% load i18n %}
+
+<div class="mf-dashboard" style="margin-bottom:24px;">
+
+    <div class="mf-bento">
+
+        <a href="/admin/main/product/" class="mf-tile">
+            <span class="mf-tile-icon green material-symbols-outlined">inventory_2</span>
+            <div>
+                <div class="mf-tile-value">{{ total_products }}</div>
+                <div class="mf-tile-label">{% translate "Products" %}</div>
+            </div>
+        </a>
+
+        <a href="/admin/main/productcategory/" class="mf-tile">
+            <span class="mf-tile-icon gold material-symbols-outlined">sell</span>
+            <div>
+                <div class="mf-tile-value">{{ total_categories }}</div>
+                <div class="mf-tile-label">{% translate "Categories" %}</div>
+            </div>
+        </a>
+
+        <a href="/admin/main/productvariant/" class="mf-tile">
+            <span class="mf-tile-icon blue material-symbols-outlined">category</span>
+            <div>
+                <div class="mf-tile-value">{{ total_variants }}</div>
+                <div class="mf-tile-label">{% translate "Variants" %}</div>
+            </div>
+        </a>
+
+        <!-- Hero tile: 2x2, the most important glanceable metric -->
+        <div class="mf-tile mf-b-hero">
+            <div style="display:flex; align-items:center; gap:8px; font-weight:600; font-size:14px;">
+                <span class="material-symbols-outlined" style="font-size:18px; color:var(--mf-green);">verified</span>
+                {% translate "Certification Status" %}
+            </div>
+            <div class="mf-tile-hero-body">
+                <div class="mf-tile-hero-row">
+                    <span>{% translate "Fully Certified" %}</span>
+                    <span class="mf-tile-hero-num" style="color:var(--mf-green);">{{ certified_count }}</span>
+                </div>
+                <div class="mf-tile-hero-row">
+                    <span>{% translate "In Progress" %}</span>
+                    <span class="mf-tile-hero-num" style="color:var(--mf-gold);">{{ in_progress_count }}</span>
+                </div>
+                <div class="mf-tile-hero-row">
+                    <span>{% translate "Pre-Certified" %}</span>
+                    <span class="mf-tile-hero-num" style="color:var(--mf-text-muted);">{{ pre_certified_count }}</span>
+                </div>
+            </div>
+        </div>
+
+        <a href="/admin/main/contactmessage/" class="mf-tile">
+            <span class="mf-tile-icon red material-symbols-outlined">mail</span>
+            <div>
+                <div class="mf-tile-value">{{ total_messages }}</div>
+                <div class="mf-tile-label">{% translate "Messages (30d)" %}</div>
+            </div>
+        </a>
+
+        <!-- Wide tile: quick stats side by side -->
+        <div class="mf-tile mf-b-wide" style="flex-direction:row; align-items:center; justify-content:space-around; gap:8px;">
+            <div style="text-align:center;">
+                <div class="mf-tile-value" style="font-size:22px;">{{ team_size }}</div>
+                <div class="mf-tile-label">{% translate "Team" %}</div>
+            </div>
+            <div style="text-align:center;">
+                <div class="mf-tile-value" style="font-size:22px;">{{ blog_posts }}</div>
+                <div class="mf-tile-label">{% translate "Blog Posts" %}</div>
+            </div>
+            <div style="text-align:center;">
+                <div class="mf-tile-value" style="font-size:22px;">{{ certifications }}</div>
+                <div class="mf-tile-label">{% translate "Certs" %}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recent messages -->
+    <div class="mf-panel">
+        <div class="mf-panel-header">
+            <span class="material-symbols-outlined" style="font-size:18px;">forum</span>
+            {% translate "Recent Messages" %}
+        </div>
+        <div class="mf-table-wrap">
+            <table class="mf-table">
+                <thead>
+                    <tr>
+                        <th>{% translate "Name" %}</th>
+                        <th>{% translate "Email" %}</th>
+                        <th>{% translate "Subject" %}</th>
+                        <th>{% translate "Date" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in recent_messages %}
+                    <tr>
+                        <td data-label="{% translate 'Name' %}">{{ message.name }}</td>
+                        <td data-label="{% translate 'Email' %}">{{ message.email }}</td>
+                        <td data-label="{% translate 'Subject' %}">{{ message.subject }}</td>
+                        <td data-label="{% translate 'Date' %}">{{ message.created_at|timesince }} {% translate "ago" %}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align:center; color:var(--mf-text-muted);">
+                            {% translate "No messages yet" %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Standard Unfold app/model list + recent actions, kept underneath our bento tiles -->
+<div class="flex flex-col lg:flex-row gap-6">
+    <div class="flex flex-col gap-5 grow">
+        {% include "unfold/helpers/app_list_default.html" with show_changelinks=True %}
+    </div>
+
+    {% include "unfold/helpers/history.html" %}
+</div>

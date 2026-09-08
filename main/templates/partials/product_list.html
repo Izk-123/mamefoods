@@ -1,0 +1,7 @@
+<ul>
+    {% for product in products %}
+        <li>{{ product.name }}</li>
+    {% empty %}
+        <li>No products found.</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,6 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1>{{ product.name }}</h1>
+<p>{{ product.description }}</p>
+{% if product.detailed_description %}<p>{{ product.detailed_description }}</p>{% endif %}
+{% endblock %}

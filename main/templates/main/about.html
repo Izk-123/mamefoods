@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1>{{ site_config.about_title }}</h1>
+<p>{{ site_config.about_description }}</p>
+
+<h2>Team</h2>
+<ul>
+    {% for member in team_members %}
+        <li>{{ member.name }} — {{ member.position }}</li>
+    {% empty %}
+        <li>No team members added yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

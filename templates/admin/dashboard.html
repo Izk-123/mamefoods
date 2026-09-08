@@ -1,0 +1,119 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="mf-dashboard">
+
+    <!-- Stat cards -->
+    <div class="mf-stats-grid">
+        <a href="/admin/main/product/" class="mf-stat-card">
+            <span class="mf-icon green material-symbols-outlined">inventory_2</span>
+            <div>
+                <div class="mf-value">{{ total_products }}</div>
+                <div class="mf-label">{% translate "Products" %}</div>
+            </div>
+        </a>
+
+        <a href="/admin/main/productcategory/" class="mf-stat-card">
+            <span class="mf-icon gold material-symbols-outlined">sell</span>
+            <div>
+                <div class="mf-value">{{ total_categories }}</div>
+                <div class="mf-label">{% translate "Categories" %}</div>
+            </div>
+        </a>
+
+        <a href="/admin/main/productvariant/" class="mf-stat-card">
+            <span class="mf-icon blue material-symbols-outlined">category</span>
+            <div>
+                <div class="mf-value">{{ total_variants }}</div>
+                <div class="mf-label">{% translate "Variants" %}</div>
+            </div>
+        </a>
+
+        <a href="/admin/main/contactmessage/" class="mf-stat-card">
+            <span class="mf-icon red material-symbols-outlined">mail</span>
+            <div>
+                <div class="mf-value">{{ total_messages }}</div>
+                <div class="mf-label">{% translate "Messages (30d)" %}</div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Certification status + quick stats -->
+    <div class="mf-grid-2">
+        <div class="mf-panel">
+            <div class="mf-panel-header">
+                <span class="material-symbols-outlined" style="font-size:18px;">verified</span>
+                {% translate "Certification Status" %}
+            </div>
+            <div class="mf-panel-body">
+                <div class="mf-cert-row">
+                    <div>
+                        <div class="mf-cert-num" style="color:var(--mf-green);">{{ certified_count }}</div>
+                        <div class="mf-cert-label">{% translate "Fully Certified" %}</div>
+                    </div>
+                    <div>
+                        <div class="mf-cert-num" style="color:var(--mf-gold);">{{ in_progress_count }}</div>
+                        <div class="mf-cert-label">{% translate "In Progress" %}</div>
+                    </div>
+                    <div>
+                        <div class="mf-cert-num" style="color:var(--mf-text-muted);">{{ pre_certified_count }}</div>
+                        <div class="mf-cert-label">{% translate "Pre-Certified" %}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mf-panel">
+            <div class="mf-panel-header">
+                <span class="material-symbols-outlined" style="font-size:18px;">bar_chart</span>
+                {% translate "Quick Stats" %}
+            </div>
+            <div class="mf-panel-body">
+                <ul class="mf-list">
+                    <li>{% translate "Team Members" %} <span class="mf-pill">{{ team_size }}</span></li>
+                    <li>{% translate "Blog Posts" %} <span class="mf-pill">{{ blog_posts }}</span></li>
+                    <li>{% translate "Certifications" %} <span class="mf-pill">{{ certifications }}</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent messages -->
+    <div class="mf-panel">
+        <div class="mf-panel-header">
+            <span class="material-symbols-outlined" style="font-size:18px;">forum</span>
+            {% translate "Recent Messages" %}
+        </div>
+        <div class="mf-table-wrap">
+            <table class="mf-table">
+                <thead>
+                    <tr>
+                        <th>{% translate "Name" %}</th>
+                        <th>{% translate "Email" %}</th>
+                        <th>{% translate "Subject" %}</th>
+                        <th>{% translate "Date" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in recent_messages %}
+                    <tr>
+                        <td data-label="{% translate "Name" %}">{{ message.name }}</td>
+                        <td data-label="{% translate "Email" %}">{{ message.email }}</td>
+                        <td data-label="{% translate "Subject" %}">{{ message.subject }}</td>
+                        <td data-label="{% translate "Date" %}">{{ message.created_at|timesince }} {% translate "ago" %}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align:center; color:var(--mf-text-muted);">
+                            {% translate "No messages yet" %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

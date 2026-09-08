@@ -1,0 +1,6 @@
+Django>=5.0,<5.3
+django-unfold>=0.100
+django-htmx
+whitenoise
+python-dotenv
+Pillow

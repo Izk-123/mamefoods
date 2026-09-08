@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1>{{ site_config.products_section_title }}</h1>
+{% for category in categories %}
+    <h2>{{ category.name }}</h2>
+    <ul>
+        {% for product in category.products.all %}
+            <li><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></li>
+        {% empty %}
+            <li>No products in this category yet.</li>
+        {% endfor %}
+    </ul>
+{% empty %}
+    <p>No product categories yet — add some in the admin.</p>
+{% endfor %}
+{% endblock %}

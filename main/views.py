@@ -33,7 +33,6 @@ class ProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Check if any products exist across all categories
         context['has_products'] = any(cat.products.exists() for cat in context['categories'])
         return context
 
@@ -75,7 +74,6 @@ class ContactView(FormView):
 
     def form_valid(self, form):
         form.save()
-        # If AJAX request, return JSON response
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
                 'status': 'success',
@@ -84,7 +82,6 @@ class ContactView(FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        # If AJAX request, return JSON errors
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
                 'status': 'error',

@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1>{{ site_config.hero_slide1_title }}</h1>
+<p>{{ site_config.hero_slide1_subtitle }}</p>
+
+<h2>Featured Products</h2>
+<ul>
+    {% for product in featured_products %}
+        <li><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></li>
+    {% empty %}
+        <li>No featured products yet — add some in the admin.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
